@@ -25,7 +25,13 @@ class MonitoringController extends Controller
             $documents = Document::orderBy('id_dokumen', 'desc')->get();
         }
 
-        return view('monitoring.pekerjaan', compact('documents'));
+        // Hitung Statistik untuk Dashboard
+        $totalPekerjaan = Document::count();
+        $totalProses = Document::where('status_progres', 'Proses')->count();
+        $totalSN = Document::where('status_progres', 'SN')->count();
+        $totalSigned = Document::where('status_progres', 'Signed')->count();
+
+        return view('monitoring.pekerjaan', compact('documents', 'totalPekerjaan', 'totalProses', 'totalSN', 'totalSigned'));
     }
 
     /**

@@ -86,7 +86,7 @@ class DocumentController extends Controller
         ]);
 
         return redirect()
-            ->route('monitoring.pekerjaan')
+            ->back()
             ->with('success', 'Data dokumen berhasil diperbarui.');
     }
 
@@ -99,7 +99,7 @@ class DocumentController extends Controller
         $doc->delete();
 
         return redirect()
-            ->route('monitoring.pekerjaan')
+            ->back()
             ->with('success', 'Data dokumen berhasil dihapus.');
     }
 }

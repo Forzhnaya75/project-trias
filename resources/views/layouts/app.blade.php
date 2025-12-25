@@ -7,7 +7,7 @@
 
     <!-- SB Admin CSS -->
     <link href="{{ asset('sbadmin/css/styles.css') }}" rel="stylesheet" />
-    <link rel="icon" type="image/x-icon" href="{{ asset('sbadmin/assets/img/favicon.png') }}" />
+    <link rel="icon" type="image/x-icon" href="{{ asset('sbadmin/assets/img/logo trias.png') }}" />
 
     <!-- FontAwesome + Feather -->
     <script defer src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/js/all.min.js"
@@ -19,7 +19,7 @@
     <style>
     /* ====== Compact Table Style (lebih luas dan padat) ====== */
     .table {
-        font-size: 0.78rem; /* lebih kecil, cocok untuk tampilan 100% zoom */
+        font-size: 0.9rem; /* ukuran standar agar lebih terbaca */
         border-collapse: collapse;
         white-space: nowrap;
     }
@@ -27,10 +27,11 @@
         background-color: #f8fafc;
         font-weight: 600;
         text-transform: capitalize;
-        font-size: 0.8rem;
+        font-size: 0.85rem;
     }
     .table td, .table th {
-        padding: 0.4rem 0.6rem; /* lebih rapat antar kolom */
+        padding: 1.25rem; /* jarak lebih lega lagi */
+        line-height: 1.6; /* spasi antar baris */
         vertical-align: middle;
         border-color: #dee2e6;
     }

@@ -5,6 +5,8 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\MonitoringController;
 use App\Http\Controllers\DocumentController;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,9 +29,16 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 | Dashboard per Role
 |--------------------------------------------------------------------------
 */
-Route::get('/superadmin/dashboard', fn() => view('superadmin.dashboard'))->name('dashboard.superadmin');
-Route::get('/admin/dashboard', fn() => view('admin.dashboard'))->name('dashboard.admin');
-Route::get('/teknisi/dashboard', fn() => view('teknisi.dashboard'))->name('dashboard.teknisi');
+Route::get('/superadmin/dashboard', [\App\Http\Controllers\SuperAdminController::class, 'dashboard'])->name('dashboard.superadmin');
+Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('dashboard.admin');
+Route::get('/teknisi/dashboard', function () {
+    $totalPekerjaan = \App\Models\Document::count();
+    $totalProses = \App\Models\Document::where('status_progres', 'Proses')->count();
+    $totalSN = \App\Models\Document::where('status_progres', 'SN')->count();
+    $totalSigned = \App\Models\Document::where('status_progres', 'Signed')->count();
+    
+    return view('teknisi.dashboard', compact('totalPekerjaan', 'totalProses', 'totalSN', 'totalSigned'));
+})->name('dashboard.teknisi');
 
 /*
 |--------------------------------------------------------------------------
@@ -62,10 +71,29 @@ Route::middleware(['auth'])->group(function () {
 
     /*
     |--------------------------------------------------------------------------
+    | Admin Management
+    |--------------------------------------------------------------------------
+    */
+    Route::get('/admin/documents', [AdminController::class, 'index'])->name('admin.documents');
+
+    /*
+    |--------------------------------------------------------------------------
     | CRUD Dokumen (Edit, Delete, Create)
     |--------------------------------------------------------------------------
     */
     Route::resource('documents', DocumentController::class)->only([
         'create', 'store', 'edit', 'update', 'destroy'
     ]);
+
+    /*
+    |--------------------------------------------------------------------------
+    | Manajemen User (Superadmin)
+    |--------------------------------------------------------------------------
+    */
+    Route::middleware(['auth', 'role:superadmin'])->group(function () {
+        Route::get('/superadmin/users', [UserController::class, 'index'])->name('users.index');
+        Route::post('/superadmin/users', [UserController::class, 'store'])->name('users.store');
+        Route::put('/superadmin/users/{id}', [UserController::class, 'update'])->name('users.update');
+        Route::delete('/superadmin/users/{id}', [UserController::class, 'destroy'])->name('users.destroy');
+    });
 });

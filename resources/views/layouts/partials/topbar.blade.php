@@ -6,7 +6,7 @@
 
         <!-- Brand -->
     <a class="navbar-brand pe-3 ps-4 ps-lg-2" href="
-        @if(Auth::user()->role === 'super_admin')
+        @if(Auth::user()->role === 'superadmin')
         {{ route('dashboard.superadmin') }}
         @elseif(Auth::user()->role === 'admin')
         {{ route('dashboard.admin') }}
@@ -23,9 +23,8 @@
             <!-- Avatar dropdown toggle -->
             <a class="btn btn-icon btn-transparent-dark dropdown-toggle" id="navbarDropdownUserImage" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 <img class="img-fluid rounded-circle"
-                     src="{{ Auth::user()->profile_picture 
-                            ? asset('storage/' . Auth::user()->profile_picture) 
-                            : asset('sbadmin/assets/img/illustrations/profiles/profile-1.png') }}"
+                     src="{{ Auth::user()->profile_picture ? Storage::url(Auth::user()->profile_picture) . '?v=' . time() : asset('sbadmin/assets/img/illustrations/profiles/profile-1.png') }}"
+                     onerror="this.onerror=null; this.src='{{ asset('sbadmin/assets/img/illustrations/profiles/profile-1.png') }}';"
                      alt="User Avatar" style="width: 40px; height: 40px; object-fit: cover;" />
             </a>
 
@@ -33,9 +32,8 @@
             <div class="dropdown-menu dropdown-menu-end border-0 shadow animated--fade-in-up" aria-labelledby="navbarDropdownUserImage">
                 <h6 class="dropdown-header d-flex align-items-center">
                     <img class="dropdown-user-img rounded-circle"
-                         src="{{ Auth::user()->profile_picture 
-                                ? asset('storage/' . Auth::user()->profile_picture) 
-                                : asset('sbadmin/assets/img/illustrations/profiles/profile-1.png') }}"
+                         src="{{ Auth::user()->profile_picture ? Storage::url(Auth::user()->profile_picture) . '?v=' . time() : asset('sbadmin/assets/img/illustrations/profiles/profile-1.png') }}"
+                         onerror="this.onerror=null; this.src='{{ asset('sbadmin/assets/img/illustrations/profiles/profile-1.png') }}';"
                          alt="User Avatar" style="width: 45px; height: 45px; object-fit: cover;" />
                     <div class="dropdown-user-details ms-2">
                         <div class="dropdown-user-details-name">{{ Auth::user()->username ?? 'User' }}</div>

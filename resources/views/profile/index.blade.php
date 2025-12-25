@@ -3,56 +3,90 @@
 @section('title', 'Pengaturan Profil')
 
 @section('content')
-    <h1 class="mt-4">Pengaturan Profil</h1>
-    <p>Halo <b>{{ Auth::user()->username }}</b>, kamu bisa update profilmu di sini.</p>
+<div class="container-xl px-4 mt-4">
+    <nav class="nav nav-borders">
+        <a class="nav-link active ms-0" href="{{ route('profile') }}">Profil</a>
+    </nav>
+    <hr class="mt-0 mb-4" />
 
-    @if(session('success'))
-        <div class="alert alert-success">{{ session('success') }}</div>
-    @endif
+    <div class="row justify-content-center">
+        <div class="col-xl-8">
+            <!-- Account details card-->
+            <div class="card mb-4">
+                <div class="card-header">Detail Akun</div>
+                <div class="card-body">
+                    
+                    @if(session('success'))
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            {{ session('success') }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    @endif
 
-    @if($errors->any())
-        <div class="alert alert-danger">
-            <ul class="mb-0">
-                @foreach($errors->all() as $err)
-                    <li>{{ $err }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
+                    @if($errors->any())
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <ul class="mb-0">
+                                @foreach($errors->all() as $err)
+                                    <li>{{ $err }}</li>
+                                @endforeach
+                            </ul>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    @endif
 
-    <form action="{{ route('profile.update') }}" method="POST" enctype="multipart/form-data">
-        @csrf
-        <div class="mb-3 text-center">
-            <label for="profile_picture" class="form-label d-block">Foto Profil</label>
-            <img id="preview" 
-                 src="{{ Auth::user()->profile_picture 
-                        ? asset('storage/' . Auth::user()->profile_picture) 
-                        : asset('sbadmin/assets/img/illustrations/profiles/profile-1.png') }}" 
-                 class="rounded-circle mb-3" 
-                 style="width:120px;height:120px;object-fit:cover;">
-            <input type="file" name="profile_picture" id="profile_picture" class="form-control mt-2">
+                    <form action="{{ route('profile.update') }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        
+                        <div class="row">
+                            <div class="col-md-4 text-center mb-4 mb-md-0">
+                                <label class="small mb-1">Foto Profil</label>
+                                <div class="position-relative d-inline-block">
+                                    <img id="preview" 
+                                         src="{{ Auth::user()->profile_picture ? asset('storage/' . Auth::user()->profile_picture) . '?t=' . time() : asset('sbadmin/assets/img/illustrations/profiles/profile-1.png') }}" 
+                                         class="img-fluid rounded-circle shadow-sm border" 
+                                         style="width: 160px; height: 160px; object-fit: cover; cursor: pointer;"
+                                         onclick="document.getElementById('profile_picture').click()">
+                                    
+                                    <div class="position-absolute bottom-0 end-0 bg-white rounded-circle p-2 shadow border" 
+                                         style="cursor: pointer; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;"
+                                         onclick="document.getElementById('profile_picture').click()">
+                                        <i data-feather="camera" class="text-primary"></i>
+                                    </div>
+                                </div>
+                                
+                                <input type="file" name="profile_picture" id="profile_picture" class="d-none" accept="image/*">
+                                <div class="small font-italic text-muted mt-2">JPG atau PNG tidak lebih dari 2 MB</div>
+                            </div>
+                            
+                            <div class="col-md-8">
+                                <div class="mb-3">
+                                    <label class="small mb-1" for="inputUsername">Username</label>
+                                    <input class="form-control" id="inputUsername" name="username" type="text" value="{{ Auth::user()->username }}" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="small mb-1" for="inputEmail">Email Address</label>
+                                    <input class="form-control" id="inputEmail" name="email" type="email" value="{{ Auth::user()->email }}" required>
+                                </div>
+                                
+                                <div class="d-grid gap-2 d-md-block">
+                                    <button class="btn btn-primary" type="submit">Simpan Perubahan</button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
         </div>
-        <div class="mb-3">
-            <label class="form-label">Nama</label>
-            <input type="text" name="username" class="form-control" value="{{ Auth::user()->username }}" required>
-        </div>
-        <div class="mb-3">
-            <label class="form-label">Email</label>
-            <input type="email" name="email" class="form-control" value="{{ Auth::user()->email }}" required>
-        </div>
-        <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
-    </form>
+    </div>
+</div>
 @endsection
 
 @push('scripts')
-    {{-- 🔹 Cropper.js --}}
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
-
-    <script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
         const input = document.getElementById('profile_picture');
         const preview = document.getElementById('preview');
-        let cropper;
 
         input.addEventListener('change', (e) => {
             const file = e.target.files[0];
@@ -60,15 +94,10 @@
                 const reader = new FileReader();
                 reader.onload = (event) => {
                     preview.src = event.target.result;
-                    if (cropper) cropper.destroy();
-                    cropper = new Cropper(preview, {
-                        aspectRatio: 1,
-                        viewMode: 1,
-                        autoCropArea: 1,
-                    });
                 };
                 reader.readAsDataURL(file);
             }
         });
-    </script>
+    });
+</script>
 @endpush
