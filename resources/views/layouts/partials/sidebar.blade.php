@@ -7,7 +7,7 @@
                 <div class="sidenav-menu-heading">Menu</div>
 
                 <!-- Dashboard (Superadmin) -->
-                @if(Auth::user()->role === 'superadmin')
+                @if(Auth::user()->role === 'super_admin')
                 <a class="nav-link" href="{{ route('dashboard.superadmin') }}">
                     <div class="nav-link-icon"><i data-feather="activity"></i></div>
                     Dashboard
@@ -32,7 +32,7 @@
 
                 <!-- Monitoring Dropdown (Accessible by all authorized roles) -->
                 <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseMonitoring"
-                   aria-expanded="false" aria-controls="collapseMonitoring">
+                    aria-expanded="false" aria-controls="collapseMonitoring">
                     <div class="nav-link-icon"><i data-feather="file-text"></i></div>
                     Monitoring
                     <div class="sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
@@ -44,9 +44,10 @@
                 </div>
 
                 <!-- Manajemen User Dropdown (Superadmin ONLY) -->
-                @if(Auth::user()->role === 'superadmin')
+                <!-- Manajemen User (Superadmin ONLY) -->
+                @if(Auth::user()->role === 'super_admin')
                 <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseUser"
-                   aria-expanded="false" aria-controls="collapseUser">
+                    aria-expanded="false" aria-controls="collapseUser">
                     <div class="nav-link-icon"><i data-feather="users"></i></div>
                     Manajemen User
                     <div class="sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
@@ -68,10 +69,15 @@
             <div class="sidenav-footer-content">
                 <div class="sidenav-footer-subtitle">Halo, Selamat datang</div>
                 <div class="sidenav-footer-title d-flex align-items-center">
+                    @php
+                    $sidebarProfilePic = Auth::user()?->profile_picture
+                    ? Storage::url(Auth::user()->profile_picture) . '?v=' . time()
+                    : asset('sbadmin/assets/img/illustrations/profiles/profile-1.png');
+                    @endphp
                     <img class="img-fluid rounded-circle me-2"
-                         src="{{ Auth::user()->profile_picture ? Storage::url(Auth::user()->profile_picture) . '?v=' . time() : asset('sbadmin/assets/img/illustrations/profiles/profile-1.png') }}"
-                         onerror="this.onerror=null; this.src='{{ asset('sbadmin/assets/img/illustrations/profiles/profile-1.png') }}';"
-                         style="width: 30px; height: 30px; object-fit: cover;">
+                        src="{{ $sidebarProfilePic }}"
+                        onerror="this.onerror=null; this.src='{{ asset('sbadmin/assets/img/illustrations/profiles/profile-1.png') }}';"
+                        style="width: 30px; height: 30px; object-fit: cover;">
                     {{ Auth::user()->username ?? 'Guest' }}
                 </div>
             </div>

@@ -15,7 +15,7 @@ class MonitoringController extends Controller
         $user = auth()->user();
 
         // Data yang ditampilkan tergantung role user
-        if ($user->role == 'superadmin') {
+        if ($user->role == 'super_admin') {
             $documents = Document::latest()->get();
         } elseif ($user->role == 'admin') {
             // Admin bisa melihat semua dokumen kecuali yang sudah Signed (opsional)
@@ -59,28 +59,27 @@ class MonitoringController extends Controller
 
         return redirect()->route('monitoring.pekerjaan')->with('success', 'Nomor SN berhasil diperbarui.');
     }
-    
-      /**
-    * Upload file dokumen SN dari modal
-    */
+
+    /**
+     * Upload file dokumen SN dari modal
+     */
     public function uploadSN(Request $request)
     {
-     $request->validate([
-         'id_dokumen' => 'required|integer|exists:documents,id_dokumen',
-         'file_path' => 'required|file|mimes:pdf,doc,docx,jpg,png|max:2048',
-     ]);
+        $request->validate([
+            'id_dokumen' => 'required|integer|exists:documents,id_dokumen',
+            'file_path' => 'required|file|mimes:pdf,doc,docx,jpg,png|max:2048',
+        ]);
 
-     $doc = Document::findOrFail($request->id_dokumen);
+        $doc = Document::findOrFail($request->id_dokumen);
 
-     // Simpan file ke storage
-     $path = $request->file('file_path')->store('dokumen_sn', 'public');
+        // Simpan file ke storage
+        $path = $request->file('file_path')->store('dokumen_sn', 'public');
 
-     // Update database
-     $doc->file_path = $path;
-     $doc->status_progres = 'SN'; // otomatis ubah status ke SN
-     $doc->save();
+        // Update database
+        $doc->file_path = $path;
+        $doc->status_progres = 'SN'; // otomatis ubah status ke SN
+        $doc->save();
 
-     return redirect()->back()->with('success', 'Dokumen SN berhasil diupload.');
+        return redirect()->back()->with('success', 'Dokumen SN berhasil diupload.');
     }
-
 }

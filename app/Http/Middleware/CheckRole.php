@@ -23,7 +23,11 @@ class CheckRole
         $user = Auth::user();
 
         // Check if user role matches any of the required roles
-        if (in_array($user->role, $roles)) {
+        // Normalize role to lowercase for comparison
+        $userRole = strtolower(trim($user->role));
+        $allowedRoles = array_map('strtolower', $roles);
+
+        if (in_array($userRole, $allowedRoles)) {
             return $next($request);
         }
 

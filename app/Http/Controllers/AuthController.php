@@ -20,8 +20,9 @@ class AuthController extends Controller
             $request->session()->regenerate();
 
             // redirect sesuai role
-            $role = Auth::user()->role;
-            if ($role === 'superadmin') {
+            $role = strtolower(trim(Auth::user()->role)); // Normalize role
+
+            if ($role === 'super_admin') {
                 return redirect()->route('dashboard.superadmin');
             } elseif ($role === 'admin') {
                 return redirect()->route('dashboard.admin');

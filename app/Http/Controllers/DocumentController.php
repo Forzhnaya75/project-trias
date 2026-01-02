@@ -102,4 +102,20 @@ class DocumentController extends Controller
             ->back()
             ->with('success', 'Data dokumen berhasil dihapus.');
     }
+
+    /**
+     * Preview file dokumen (inline) untuk menghindari 403
+     */
+    public function preview($id)
+    {
+        $document = Document::findOrFail($id);
+
+        if (!$document->file_path || !file_exists(storage_path('app/public/' . $document->file_path))) {
+            abort(404, 'File not found');
+        }
+
+        $path = storage_path('app/public/' . $document->file_path);
+        
+        return response()->file($path);
+    }
 }

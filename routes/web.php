@@ -13,6 +13,7 @@ use App\Http\Controllers\UserController;
 | Halaman Utama
 |--------------------------------------------------------------------------
 */
+
 Route::get('/', fn() => view('landing'));
 
 /*
@@ -36,7 +37,7 @@ Route::get('/teknisi/dashboard', function () {
     $totalProses = \App\Models\Document::where('status_progres', 'Proses')->count();
     $totalSN = \App\Models\Document::where('status_progres', 'SN')->count();
     $totalSigned = \App\Models\Document::where('status_progres', 'Signed')->count();
-    
+
     return view('teknisi.dashboard', compact('totalPekerjaan', 'totalProses', 'totalSN', 'totalSigned'));
 })->name('dashboard.teknisi');
 
@@ -81,8 +82,14 @@ Route::middleware(['auth'])->group(function () {
     | CRUD Dokumen (Edit, Delete, Create)
     |--------------------------------------------------------------------------
     */
+    Route::get('/documents/{id}/preview', [DocumentController::class, 'preview'])->name('documents.preview');
+
     Route::resource('documents', DocumentController::class)->only([
-        'create', 'store', 'edit', 'update', 'destroy'
+        'create',
+        'store',
+        'edit',
+        'update',
+        'destroy'
     ]);
 
     /*
@@ -90,7 +97,7 @@ Route::middleware(['auth'])->group(function () {
     | Manajemen User (Superadmin)
     |--------------------------------------------------------------------------
     */
-    Route::middleware(['auth', 'role:superadmin'])->group(function () {
+    Route::middleware(['auth', 'role:super_admin'])->group(function () {
         Route::get('/superadmin/users', [UserController::class, 'index'])->name('users.index');
         Route::post('/superadmin/users', [UserController::class, 'store'])->name('users.store');
         Route::put('/superadmin/users/{id}', [UserController::class, 'update'])->name('users.update');

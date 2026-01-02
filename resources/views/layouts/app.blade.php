@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
@@ -17,71 +18,84 @@
 
     <!-- 🔹 Compact Table Style (lebih luas & padat) -->
     <style>
-    /* ====== Compact Table Style (lebih luas dan padat) ====== */
-    .table {
-        font-size: 0.9rem; /* ukuran standar agar lebih terbaca */
-        border-collapse: collapse;
-        white-space: nowrap;
-    }
-    .table th {
-        background-color: #f8fafc;
-        font-weight: 600;
-        text-transform: capitalize;
-        font-size: 0.85rem;
-    }
-    .table td, .table th {
-        padding: 1.25rem; /* jarak lebih lega lagi */
-        line-height: 1.6; /* spasi antar baris */
-        vertical-align: middle;
-        border-color: #dee2e6;
-    }
+        /* ====== Compact Table Style (lebih luas dan padat) ====== */
+        .table {
+            font-size: 0.9rem;
+            /* ukuran standar agar lebih terbaca */
+            border-collapse: collapse;
+            white-space: nowrap;
+        }
 
-    /* ====== Tampilan Baris ====== */
-    .table-striped tbody tr:nth-of-type(odd) {
-        background-color: #f9fafc;
-    }
-    .table-hover tbody tr:hover {
-        background-color: #eef2ff;
-        transition: 0.2s ease;
-    }
+        .table th {
+            background-color: #f8fafc;
+            font-weight: 600;
+            text-transform: capitalize;
+            font-size: 0.85rem;
+        }
 
-    /* ====== Wrapper Responsif ====== */
-    .table-responsive {
-        border-radius: 10px;
-        box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-        overflow-x: auto;
-    }
+        .table td,
+        .table th {
+            padding: 1.25rem;
+            /* jarak lebih lega lagi */
+            line-height: 1.6;
+            /* spasi antar baris */
+            vertical-align: middle;
+            border-color: #dee2e6;
+        }
 
-    /* ====== Perbaiki tampilan teks kolom ====== */
-    .table td {
-        white-space: normal !important;
-        word-wrap: break-word;
-        max-width: 250px; /* sedikit lebih kecil */
-    }
+        /* ====== Tampilan Baris ====== */
+        .table-striped tbody tr:nth-of-type(odd) {
+            background-color: #f9fafc;
+        }
 
-    /* ====== Estetika Umum ====== */
-    .card {
-        border: none;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-    }
-    h4, h5 {
-        color: #1e293b;
-    }
-    .btn {
-        border-radius: 50px;
-        font-size: 0.8rem; /* tombol ikut lebih kecil */
-        padding: 0.3rem 0.9rem;
-    }
+        .table-hover tbody tr:hover {
+            background-color: #eef2ff;
+            transition: 0.2s ease;
+        }
 
-    /* ====== Sticky Header opsional (biar header tetap di atas saat scroll) ====== */
-    .table thead th {
-        position: sticky;
-        top: 0;
-        z-index: 5;
-        background-color: #f8fafc;
-    }
+        /* ====== Wrapper Responsif ====== */
+        .table-responsive {
+            border-radius: 10px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+            overflow-x: auto;
+        }
+
+        /* ====== Perbaiki tampilan teks kolom ====== */
+        .table td {
+            white-space: normal !important;
+            word-wrap: break-word;
+            max-width: 250px;
+            /* sedikit lebih kecil */
+        }
+
+        /* ====== Estetika Umum ====== */
+        .card {
+            border: none;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        h4,
+        h5 {
+            color: #1e293b;
+        }
+
+        .btn {
+            border-radius: 50px;
+            font-size: 0.8rem;
+            /* tombol ikut lebih kecil */
+            padding: 0.3rem 0.9rem;
+        }
+
+        /* ====== Sticky Header opsional (biar header tetap di atas saat scroll) ====== */
+        .table thead th {
+            position: sticky;
+            top: 0;
+            z-index: 5;
+            background-color: #f8fafc;
+        }
     </style>
 </head>
+
 <body class="nav-fixed">
 
     {{-- 🔹 Topbar --}}
@@ -125,4 +139,5 @@
     {{-- 🔹 Slot script untuk halaman --}}
     @yield('scripts')
 </body>
+
 </html>
